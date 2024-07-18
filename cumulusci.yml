@@ -1,0 +1,44 @@
+minimum_cumulusci_version: '3.90.0'
+project:
+    name: CCI_TEST
+    package:
+        name: cci_project
+        api_version: '61.0'
+    git:
+    source_format: sfdx
+
+tasks:
+    robot:
+        options:
+            suites: robot/CCI_TEST/tests
+            options:
+                outputdir: robot/CCI_TEST/results
+
+    robot_testdoc:
+        options:
+            path: robot/CCI_TEST/tests
+            output: robot/CCI_TEST/doc/CCI_TEST_tests.html
+
+    run_tests:
+        options:
+            required_org_code_coverage_percent: 85
+
+    deploy:
+        description: Deploys metadata to the org
+        class_path: cumulusci.tasks.salesforce.Deploy
+        options:
+            path: force-app/main/default/classes # Путь к директории, содержащей ваши метаданные и код
+
+    extract_dataset:
+        description: Extract dataset from the org
+        class_path: cumulusci.tasks.bulkdata.ExtractData
+        options:
+            mapping: datasets/mapping.yml
+            database_url: sqlite:///datasets/extracted_data.db
+
+    load_dataset:
+        description: Load dataset into the org
+        class_path: cumulusci.tasks.bulkdata.LoadData
+        options:
+            mapping: datasets/mapping.yml
+            database_url: sqlite:///datasets/extracted_data.db

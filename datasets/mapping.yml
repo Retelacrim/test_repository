@@ -1,0 +1,8 @@
+Contact:
+    sf_object: Contact
+    fields:
+        Id: Id
+        FirstName: FirstName
+        LastName: LastName
+        Email: Email
+    lookups: {}
